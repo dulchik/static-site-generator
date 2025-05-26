@@ -9,11 +9,13 @@ path_to_static = "./static"
 path_to_docs = "./docs"
 path_to_template = "./template.html"
 path_to_content = "./content"
-
-basepath = sys.argv[0]
+default_basepath = "/"
 
 
 def main():
+    basepath = default_basepath
+    if len(sys.argv) > 1:
+        basepath = sys.argv[1]
     if os.path.exists(path_to_docs):
        shutil.rmtree(path_to_docs)
 
@@ -52,8 +54,8 @@ def generate_page(from_path, template_path, dest_path, basepath):
     template_file = template_file.replace("{{ Title }}", title)
     template_file = template_file.replace("{{ Content }}", html_string)
 
-    template_file = template_file.replace('href="/"', f'href="{basepath}"')
-    template_file = template_file.replace('src="/"', f'src="{basepath}"')
+    template_file = template_file.replace('href="/', 'href="' + basepath)
+    template_file = template_file.replace('src="/', 'src="' + basepath)
     
     dest_dir_path = os.path.dirname(dest_path)
     if dest_dir_path != "":
